@@ -97,6 +97,21 @@ let degrees = (x: float): float => {
   x / 180. * _PI
 }
 
+let toDegrees = (x: float): float => {
+  x / _PI * 180.
+}
+
+let rec angleOffset = (theta1: float, theta2: float): float => {
+  let rawDiff = theta1 - theta2
+  if abs_float(rawDiff) < _PI {
+    rawDiff
+  } else if rawDiff > 0. {
+    angleOffset(theta1, theta2 + 2. * _PI)
+  } else {
+    angleOffset(theta1 + 2. * _PI, theta2)
+  }
+}
+
 let astroEpoch = Js.Date.utcWithYMDH(~year=2000., ~month=0., ~date=0., ~hours=12., ())
 let dateToAstroSecs = (date: date): float => {
   (date->Js.Date.getTime - astroEpoch) / 1000.
